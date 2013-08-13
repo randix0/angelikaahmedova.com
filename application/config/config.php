@@ -2,7 +2,7 @@
 
 
 $AUTO_CONF=array(
-    '/www/angelika.lo/www/'				                                => 'bsd',
+    '/www/angelika.lo/trunk/'				                                => 'bsd',
     '/home/ukrai531/domains/angelikaahmedova.com/public_html/'   => 'test', //Release Candidate
     '/home/ukrai531/domains/angelikaahmedova.com/public_html/'        => 'live',
 // 'func'				=> 'conf_check_devel',

@@ -27,36 +27,48 @@
 function &DB($params = '', $active_record_override = NULL)
 {
 	// Load the DB config file if a DSN string wasn't passed
-	if (is_string($params) AND strpos($params, '://') === FALSE)
-	{
-		// Is the config file in the environment folder?
+    if (is_string($params) AND strpos($params, '://') === FALSE)
+    {
+        // Is the config file in the environment folder?
+        /*
 		if ( ! defined('ENVIRONMENT') OR ! file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/database.php'))
 		{
-			if ( ! file_exists($file_path = APPPATH.'config/database.php'))
+			if ( ! file_exists($file_path = APPPATH.'config/config.php'))
 			{
 				show_error('The configuration file database.php does not exist.');
 			}
-		}
+		}*/
 
-		include($file_path);
+        $config = & get_config();
+        $active_group = 'default';
 
-		if ( ! isset($db) OR count($db) == 0)
-		{
-			show_error('No database connection settings were found in the database config file.');
-		}
 
-		if ($params != '')
-		{
-			$active_group = $params;
-		}
+        if (!isset($config['db']) || !$config['db']) {
+            show_error('The configuration file config.php does not have database configurations.');
+        }
+        $db = $config['db'];
 
-		if ( ! isset($active_group) OR ! isset($db[$active_group]))
-		{
-			show_error('You have specified an invalid database connection group.');
-		}
+        //include($file_path);
 
-		$params = $db[$active_group];
-	}
+        //var_dump($config['db']);
+
+        if ( ! isset($db) OR count($db) == 0)
+        {
+            show_error('No database connection settings were found in the database config file.');
+        }
+
+        if ($params != '')
+        {
+            $active_group = $params;
+        }
+
+        if ( ! isset($active_group) OR ! isset($db[$active_group]))
+        {
+            show_error('You have specified an invalid database connection group.');
+        }
+
+        $params = $db[$active_group];
+    }
 	elseif (is_string($params))
 	{
 

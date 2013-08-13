@@ -18,3 +18,20 @@ $config['linkedin_app_secret'] = 'YQ7spjnzOfmg2Kcr';
 
 $config['soundcloud_app_id'] = '897d7fc4c9d5ec065ad9e642b872a20c';
 $config['soundcloud_app_secret'] = 'dbe96dde468052d89cfa4731065419ff';
+
+
+$config['db']['default']['hostname'] = 'localhost';
+$config['db']['default']['dbdriver'] = 'mysql';
+$config['db']['default']['pconnect'] = TRUE;
+$config['db']['default']['db_debug'] = TRUE;
+$config['db']['default']['cache_on'] = FALSE;
+$config['db']['default']['cachedir'] = '';
+$config['db']['default']['char_set'] = 'utf8';
+$config['db']['default']['dbcollat'] = 'utf8_general_ci';
+$config['db']['default']['swap_pre'] = '';
+$config['db']['default']['autoinit'] = TRUE;
+$config['db']['default']['stricton'] = FALSE;
+$config['db']['default']['username'] = 'root';
+$config['db']['default']['password'] = 'iddqd';
+$config['db']['default']['database'] = 'angelika';
+$config['db']['default']['dbprefix'] = 'angelika_';
