@@ -16,7 +16,7 @@
         <!-- Тегам высота и ширина автоматом давать расширение монитора -->
         <video id="my_video_1" class="video-js vjs-default-skin" controls
                preload="none" style="width: 100%; max-height: 100%;"
-               data-setup="">
+               data-setup="{ }">
             <source src="{$RESOURCES_URL}video/promo.mp4" type='video/mp4'>
             {*<source src="{$RESOURCES_URL}video/intro.webm" type='video/webm'>*}
         </video>
