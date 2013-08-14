@@ -4,6 +4,7 @@
 $config['base_url']	= 'http://angelika.lo/';
 $config['resources_url'] = '/resources/';
 $config['resources_path'] = 'resources/';
+$config['TEST_MODE'] = true;
 
 $config['vkontakte_app_id'] = '3730064';
 $config['vkontakte_app_secret'] = 'I4I1rXHfaP0jzj41zdXK';

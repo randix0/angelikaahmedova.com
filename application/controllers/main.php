@@ -21,7 +21,10 @@ class Main extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        if (!$this->user->logged() || $this->user->access_level < 50 || $this->user->is_deleted) {
+
+        $TEST_MODE = $this->config->item('TEST_MODE');
+
+        if (!$TEST_MODE && (!$this->user->logged() || $this->user->access_level < 50 || $this->user->is_deleted)) {
             redirect('/pages/login/');
         }
 

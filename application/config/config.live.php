@@ -8,6 +8,7 @@
 $config['base_url']	= 'http://angelikaahmedova.com/';
 $config['resources_url'] = '/resources/';
 $config['resources_path'] = 'resources/';
+$config['TEST_MODE'] = false;
 
 $config['vkontakte_app_id'] = '3730064';
 $config['vkontakte_app_secret'] = 'I4I1rXHfaP0jzj41zdXK';
@@ -25,6 +26,22 @@ $config['linkedin_app_secret'] = 'YQ7spjnzOfmg2Kcr';
 
 $config['soundcloud_app_id'] = '897d7fc4c9d5ec065ad9e642b872a20c';
 $config['soundcloud_app_secret'] = 'dbe96dde468052d89cfa4731065419ff';
+
+$config['db']['default']['hostname'] = 'localhost';
+$config['db']['default']['dbdriver'] = 'mysql';
+$config['db']['default']['pconnect'] = TRUE;
+$config['db']['default']['db_debug'] = TRUE;
+$config['db']['default']['cache_on'] = FALSE;
+$config['db']['default']['cachedir'] = '';
+$config['db']['default']['char_set'] = 'utf8';
+$config['db']['default']['dbcollat'] = 'utf8_general_ci';
+$config['db']['default']['swap_pre'] = '';
+$config['db']['default']['autoinit'] = TRUE;
+$config['db']['default']['stricton'] = FALSE;
+$config['db']['default']['username'] = 'ukrai531_rand';
+$config['db']['default']['password'] = 'yueldrey0';
+$config['db']['default']['database'] = 'ukrai531_sites_db';
+$config['db']['default']['dbprefix'] = 'angelika_';
 
 /*
  * https://api.instagram.com/v1/users/18360510/media/recent/?access_token=18360510.5b9e1e6.de870cc4d5344ffeaae178542029e98b
