@@ -26,8 +26,9 @@ class Admin extends CI_Controller {
         //$this->load->model('m_admin');
 
         if (!$this->user->logged() || $this->user->access_level < 50 || $this->user->is_deleted) {
-            redirect('/');
+            redirect('/pages/login/');
         }
+        $this->load->model('m_model');
     }
 
     public function index()
@@ -36,7 +37,7 @@ class Admin extends CI_Controller {
         $ps = array(
             'ADMIN' => true,
             '__PAGE' => 'main',
-            'SUBPARTITION__PAGE' => '',
+            '__SUBPAGE' => '',
             //'stat' => $this->m_admin->getStatistic()
         );
         $this->mysmarty->view('admin/main/index.tpl', $ps);
@@ -283,5 +284,20 @@ class Admin extends CI_Controller {
             'tags' => $tags
         );
         $this->mysmarty->view('admin/posts/add/index.tpl', $ps);
+    }
+
+    public function media()
+    {
+        $music = $this->m_model->getItems(false,'music');
+        $video = $this->m_model->getItems(false,'video');
+        $ps = array(
+            'ADMIN' => true,
+            '__PAGE' => 'media',
+            '__SUBPAGE' => '',
+            'music' => $music,
+            'vide' => $video
+            //'stat' => $this->m_admin->getStatistic()
+        );
+        $this->mysmarty->view('admin/media/items/index.tpl', $ps);
     }
 }

@@ -3,7 +3,11 @@
         {include file="std/nav/index.tpl" __PAGE="music"}
         <div class="s-content">
             <div class="s-content-body">
-                <a href="https://soundcloud.com/AngelikaAhmedova" class="sc-player">Angelika Ahmedova</a>
+                {if isset($music) && $music}
+                    {foreach from=$music item=item}
+                        <a href="{$item.link}" class="sc-player">{$item.iname}</a
+                    {/foreach}
+                {/if}
             </div>
         </div>
     </div>
