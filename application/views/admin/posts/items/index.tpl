@@ -1,4 +1,11 @@
-{include file="admin/std/sidebar/products.tpl"}
+<div class="span3">
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+            <li class="nav-header"><h3>Posts</h3></li>
+        </ul>
+    </div><!--/.well -->
+</div><!--/span-->
+
 <div class="span9">
     <h1>Посты
         <a class="btn" href="/admin/posts/add/">Add</a>

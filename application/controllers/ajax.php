@@ -18,10 +18,23 @@ class Ajax extends CI_Controller {
      * @see http://codeigniter.com/user_guide/general/urls.html
      */
 
+    protected $isAjax = false;
+
     function __construct()
     {
         parent::__construct();
         $this->load->library('json');
+        $this->load->helper('url');
+        $this->load->model('m_model');
+        $this->isAjax = $this->input->is_ajax_request();
+    }
+
+    protected function returner($result = null, $goto = '')
+    {
+        if ($this->isAjax)
+            return $this->json->parse($result);
+        else
+            return redirect($goto);
     }
 
     public function index()
@@ -297,33 +310,12 @@ class Ajax extends CI_Controller {
     {
         $result = array('status' => 'error');
         $RAW = $this->input->post('item');
-        if (!$RAW || !$table || !preg_match('/^(products_details|products_photos|products_colors|news_photos)$/',$table,$match) || !isset($RAW['item_id']) || !$RAW['item_id'] || !isset($RAW['parent_id']) || !$RAW['parent_id']) return $this->json->parse($result);
-
-        $table2col = array(
-            'products_details' => 'detail_id',
-            'products_colors' => 'color_id',
-            'products_photos' => 'id',
-            'news_photos' => 'id'
-        );
-
-        $parent2id = array(
-            'products_details' => 'product_id',
-            'products_colors' => 'product_id',
-            'products_photos' => 'product_id',
-            'news_photos' => 'news_id'
-        );
+        if (!$RAW || !$table || !preg_match('/^(post|comments|tags_links|users|music|video)$/',$table,$match) || !isset($RAW['id']) || !$RAW['id']) return $this->json->parse($result);
 
         $where = array(
-            $parent2id[$table] => (int)$RAW['parent_id'],
-            $table2col[$table] => (int)$RAW['item_id']
+            'id' => (int)$RAW['id']
         );
 
-        $this->load->model('m_products');
-        $result['raw'] = $RAW;
-
-        $result['match'] = $match;
-
-        //$this->m_products->del($table);
         if ($table && $where) {
             $del = $this->db->delete($table, $where);
             if ($del)
@@ -690,7 +682,7 @@ class Ajax extends CI_Controller {
         $this->load->helper('file');
         $result = array('status'=>'error');
 
-        if (!$upload_type || !$item_id || !preg_match('/^(products|details|colors|news)$/',$upload_type)) return $this->json->parse($result);
+        if (!$upload_type || !$item_id || !preg_match('/^(video)$/',$upload_type)) return $this->json->parse($result);
 
         if (!$_FILES || !isset($_FILES['userfile']) || !$_FILES['userfile'] || !isset($_FILES['userfile']['name'])) return $this->json->parse($result);
 
@@ -699,17 +691,11 @@ class Ajax extends CI_Controller {
 
         $allowed_files = array(
             //'attachments' => 'pdf|doc|docx|png|jpg',
-            'products' => 'png|jpg',
-            'details' => 'png|jpg',
-            'colors' => 'png|jpg',
-            'news' => 'png|jpg'
+            'video' => 'png|jpg',
         );
 
         $limit = array(
-            'products' => 10,
-            'details' => 1,
-            'colors' => 1,
-            'news' => 10
+            'video' => 1,
         );
 
         $files = array();
@@ -1133,6 +1119,51 @@ class Ajax extends CI_Controller {
             $result['errors'][] = 'comment add error';
         }
         return $this->json->parse($result);
+    }
+
+    public function saveMedia()
+    {
+        $result = array('status' => 'error', 'errors' => array(), 'code' => 0);
+
+        $data = $this->input->post('item');
+        $file = $this->input->post('file');
+
+        if (!$data || !isset($data['iname']) || !$data['iname']) return $this->returner($result,'/admin/media/');
+
+        $photo = array();
+        if ($file && isset($file['store_name']) && $file['store_name'] && isset($file['upload_path']) && $file['upload_path']) {
+            $this->load->library('imagine');
+            $photo = $this->imagine->proccessPhoto($file);
+            if ($photo) {
+                $nMedia['poster_s'] = $photo['s'];
+                $nMedia['poster_m'] = $photo['m'];
+                $nMedia['poster_b'] = $photo['b'];
+            }
+        }
+
+        $mediaId = 0;
+        if($data['type'] == 'video' && preg_match('/(?:\?|\&)v\=([A-z0-9\-\_]+)/', $data['link'], $matches)) {
+            if (!$photo) {
+                $nMedia['poster_b'] = 'http://i1.ytimg.com/vi/'.$matches[1].'/0.jpg';
+                $nMedia['poster_m'] = 'http://i1.ytimg.com/vi/'.$matches[1].'/1.jpg';
+            }
+            $nMedia['code'] = $matches[1];
+            $nMedia['iname'] = $data['iname'];
+            $nMedia['idesc'] = $data['idesc'];
+            $mediaId = $this->m_model->create($nMedia, 'video');
+        } elseif($data['type'] == 'music' && $data['link']) {
+            $nMedia['iname'] = $data['iname'];
+            $nMedia['idesc'] = $data['idesc'];
+            $nMedia['link'] = $data['link'];
+            $mediaId = $this->m_model->create($nMedia, 'music');
+        }
+
+        if ($mediaId) {
+            $result['status'] = 'success';
+        } else {
+            $result['errors'][] = 'media add error';
+        }
+        return $this->returner($result,'/admin/media/');
     }
 }
 

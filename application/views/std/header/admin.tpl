@@ -7,7 +7,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="{$RESOURCES_URL}js/vendor/jquery-1.9.1.min.js"></script>
-    <script src="{$RESOURCES_URL}js/jquery.masonry.min.js"></script>
 
     <!-- Le styles -->
     <link rel="stylesheet" href="{$RESOURCES_URL}css/window.css">

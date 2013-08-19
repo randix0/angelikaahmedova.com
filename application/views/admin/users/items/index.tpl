@@ -1,7 +1,7 @@
 <div class="span3">
     <div class="well sidebar-nav">
         <ul class="nav nav-list">
-            <li class="nav-header"><h3>Filtering</h3></li>
+            <li class="nav-header"><h3>Users</h3></li>
             <li class="{if $__SUBPAGE == 'all'}active{/if}"><a href="{$SITE_URI}admin/users/all">All</a></li>
             <li class="{if $__SUBPAGE == 'active'}active{/if}"><a href="{$SITE_URI}admin/users/active">Active</a></li>
             <li class="{if $__SUBPAGE == 'deleted'}active{/if}"><a href="{$SITE_URI}admin/users/deleted">Deleted</a></li>

@@ -1,18 +1,35 @@
 <div class="span3">
     <div class="well sidebar-nav">
         <ul class="nav nav-list">
-            <li class="nav-header"><h3>Filtering</h3></li>
-            <li class="{if $__SUBPAGE == 'all'}active{/if}"><a href="{$SITE_URI}admin/users/all">All</a></li>
-            <li class="{if $__SUBPAGE == 'active'}active{/if}"><a href="{$SITE_URI}admin/users/active">Active</a></li>
-            <li class="{if $__SUBPAGE == 'deleted'}active{/if}"><a href="{$SITE_URI}admin/users/deleted">Deleted</a></li>
-            <li class="{if $__SUBPAGE == 'admin'}active{/if}"><a href="{$SITE_URI}admin/users/admin">ADMIN</a></li>
+            <li class="nav-header"><h3>Music/Video</h3></li>
         </ul>
     </div><!--/.well -->
 </div><!--/span-->
 
 <div class="span9">
-    <h1>Music</h1>
-    <hr>
+    <div class="mB30">
+        <form class="left mR30" method="post" action="/ajax/saveMedia/">
+            <input type="hidden" name="item[type]" value="music"/>
+            <h3>Add music</h3>
+            <div><input type="text" name="item[iname]" placeholder="title"/></div>
+            <div><input type="text" name="item[link]" placeholder="soundcloud-link"/></div>
+            <div><textarea name="item[idesc]" rows="5" placeholder="description"></textarea></div>
+            <div><input type="submit" class="btn"/></div>
+        </form>
+        <form class="left" method="post" action="/ajax/saveMedia/">
+            <input type="hidden" name="item[type]" value="video"/>
+            <h3>Add video</h3>
+            <div><input type="text" name="item[iname]" placeholder="title"/></div>
+            <div><input type="text" name="item[link]" placeholder="youtube-code"/></div>
+            <div><textarea name="item[idesc]" rows="5" placeholder="description"></textarea></div>
+            <input type="hidden" id="file_upload_path" name="file[upload_path]" value="" />
+
+            <div id="video_photos"></div>
+            <a id="file_preview" class="btn btn-info" onclick="Window.load('/modal/upload/video/-1/0','win-upload','');">Load</a>
+            <input type="submit" class="btn"/>
+        </form>
+        <div class="clearfix"></div>
+    </div>
 
     <table class="table table-bordered" data-offset="">
         <tbody id="admin_users">
@@ -33,9 +50,10 @@
         <tbody id="admin_users">
         <tr class="info">
             <td>id</td>
-            <td>link</td>
+            <td>code</td>
             <td>iname</td>
             <td>idesc</td>
+            <td>poster</td>
             <td>position</td>
             <td>add_date</td>
             <td>is_deleted</td>
@@ -72,9 +90,3 @@
     *}
 
 </div>
-
-{*
-<script type="text/javascript">
-    onScrollLoader.init('/ajax/getPhotosExt/{$getItems_code}/{$order_by}/', '#admin_photos .admin_photos_item');
-</script>
-*}

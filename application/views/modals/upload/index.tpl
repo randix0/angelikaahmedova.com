@@ -1,43 +1,10 @@
 <script type="text/javascript">
-    {if $upload_type == 'products' || $upload_type == 'news'}
+    {if $upload_type == 'video'}
     Upload.callback = function(data){
         if (data.status == 'success') {
             console.log('good');
 
-            var img, inpt, in_iname, in_idesc, in_cover, photo_id, d;
-
-
-            for (i in data.files){
-                //$('#file_preview').addClass('active').css('background-image','url(/'+data.files[i].path+')');
-                img = new Image();
-                img.src = '/'+data.files[i].path;
-                img.width = 100;
-                inpt = '<input type="hidden" name="file[store_name]['+i+']" value="'+data.files[i].store_name+'">';
-                in_iname = '<input type="text" name="file[iname]['+i+']" placeholder="title" />';
-                in_idesc = '<input type="text" name="file[idesc]['+i+']" placeholder="description" />';
-                in_cover = '<input type="radio" name="file[cover]" value="'+i+'" />';
-                photo_id = 'photo_'+i+'_'+data.files[i].size;
-
-                d = document.createElement('div');
-                d.id = photo_id;
-
-                $(d).html(img).append(inpt+in_iname+in_idesc+in_cover);
-                $('#photos').append(d);
-
-                img = inpt = d = null;
-
-            }
-            $('#file_upload_path').val(data.upload_path);
-            console.log('file='+data.files[0].path);
-            Window.close('win-upload');
-        }
-    };
-    {elseif $upload_type == 'details'}
-    Upload.callback = function(data){
-        if (data.status == 'success') {
-            console.log('good');
-
-            var img, inpt, in_iname, in_idesc, photo_id, d;
+            var img, inpt, photo_id, d;
 
             for (i in data.files){
                 //$('#file_preview').addClass('active').css('background-image','url(/'+data.files[i].path+')');
@@ -51,36 +18,7 @@
                 d.id = photo_id;
 
                 $(d).html(img).append(inpt);
-                $('#details_photos').append(d);
-
-                img = inpt = d = null;
-
-            }
-            $('#file_upload_path').val(data.upload_path);
-            console.log('file='+data.files[0].path);
-            Window.close('win-upload');
-        }
-    };
-    {elseif $upload_type == 'colors'}
-    Upload.callback = function(data){
-        if (data.status == 'success') {
-            console.log('good');
-
-            var img, inpt, in_iname, in_idesc, photo_id, d;
-
-            for (i in data.files){
-                //$('#file_preview').addClass('active').css('background-image','url(/'+data.files[i].path+')');
-                img = new Image();
-                img.src = '/'+data.files[i].path;
-                img.width = 100;
-                inpt = '<input type="hidden" name="file[store_name]" value="'+data.files[i].store_name+'">';
-                photo_id = 'photo_'+i+'_'+data.files[i].size;
-
-                d = document.createElement('div');
-                d.id = photo_id;
-
-                $(d).html(img).append(inpt);
-                $('#colors_photos').append(d);
+                $('#video_photos').append(d);
 
                 img = inpt = d = null;
 

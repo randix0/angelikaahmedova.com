@@ -219,8 +219,8 @@ class Admin extends CI_Controller {
 
     public function posts()
     {
-        $this->load->model('m_products');
-        $posts = $this->m_products->getItems(false, 'posts');
+        $this->load->model('m_model');
+        $posts = $this->m_model->getItems(false, 'posts');
         $ps = array(
             'ADMIN' => true,
             '__PAGE' => 'posts',
@@ -288,6 +288,24 @@ class Admin extends CI_Controller {
 
     public function media()
     {
+        $data = $this->input->post('item');
+        if ($data){
+            if($data['type'] == 'video' && preg_match('/(?:\?|\&)v\=([A-z0-9\-\_]+)/', $data['link'], $matches)) {
+                $nVideo['poster_b'] = 'http://i1.ytimg.com/vi/'.$matches[1].'/0.jpg';
+                $nVideo['poster_m'] = 'http://i1.ytimg.com/vi/'.$matches[1].'/1.jpg';
+                $nVideo['code'] = $matches[1];
+                $nVideo['iname'] = $data['iname'];
+                $nVideo['idesc'] = $data['idesc'];
+                $this->m_model->create($nVideo, 'video');
+            } elseif($data['type'] == 'music' && $data['link']) {
+                $nMusic['iname'] = $data['iname'];
+                $nMusic['idesc'] = $data['idesc'];
+                $nMusic['link'] = $data['link'];
+                $this->m_model->create($nMusic, 'music');
+            }
+        }
+
+
         $music = $this->m_model->getItems(false,'music');
         $video = $this->m_model->getItems(false,'video');
         $ps = array(
@@ -295,9 +313,21 @@ class Admin extends CI_Controller {
             '__PAGE' => 'media',
             '__SUBPAGE' => '',
             'music' => $music,
-            'vide' => $video
+            'video' => $video
             //'stat' => $this->m_admin->getStatistic()
         );
         $this->mysmarty->view('admin/media/items/index.tpl', $ps);
+    }
+
+    public function about()
+    {
+        $about = array();
+        $ps = array(
+            'ADMIN' => true,
+            '__PAGE' => 'about',
+            '__SUBPAGE' => '',
+            'about' => $about,
+        );
+        $this->mysmarty->view('admin/about/index.tpl', $ps);
     }
 }

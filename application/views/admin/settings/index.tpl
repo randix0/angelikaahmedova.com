@@ -1,12 +1,14 @@
-<section class="b-section b-section-ideas">
-    <div class="b-section-header layout w976px">
-        <div class="b-section-header-iname">{l}NAV_SETTINGS{/l}</div>
-    </div>
-    <div class="b-section-body b-ideas layout w1010px">
-        {include file="admin/settings/items.tpl"}
-    </div>
-    <div class="b-section-footer layout w1010px tCenter"></div>
-</section>
+<div class="span3">
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+            <li class="nav-header"><h3>SETTINGS</h3></li>
+        </ul>
+    </div><!--/.well -->
+</div><!--/span-->
+
+<div class="span9">
+    {include file="admin/settings/items.tpl"}
+</div>
 
 
 <script type="text/javascript">

@@ -40,11 +40,13 @@ class Main extends CI_Controller {
             $instagram = json_decode($instagram_json, true);
 
         $music = $this->m_model->getItems(array(),'music');
+        $video = $this->m_model->getItems(array('order'=>array('id'=>'desc')),'video');
 
         $ps = array(
             '__PAGE' => 'main',
             'instagram' => $instagram,
-            'music' => $music
+            'music' => $music,
+            'video' => $video
         );
         $this->mysmarty->view('global/main/index.tpl', $ps);
 	}
