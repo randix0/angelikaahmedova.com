@@ -8,7 +8,7 @@ class M_model extends CI_Model
         parent::__construct();
     }
 
-    public function create($data, $table = 'post')
+    public function create($data, $table = 'posts')
     {
         if (!$data) return false;
         $this->db->insert($table, $data);
@@ -16,7 +16,14 @@ class M_model extends CI_Model
         return $id;
     }
 
-    public function update($id, $data, $table = 'posts')
+    public function batch_create($data, $table = 'posts')
+    {
+        if (!$data) return false;
+        $result = $this->db->insert_batch($table, $data);
+        return $result;
+    }
+
+    public function update($id, $data, $table = 'postss')
     {
         if (!$data || !$id) return false;
         $id = (int)$id;
@@ -24,7 +31,7 @@ class M_model extends CI_Model
         return true;
     }
 
-    public function getItem($getItem = array(), $table = 'post', $fetch = false)
+    public function getItem($getItem = array(), $table = 'posts', $fetch = false)
     {
         $where = $order = array();
         $limit = 1;
@@ -53,19 +60,19 @@ class M_model extends CI_Model
             $query = $this->db->get($table, $limit, $offset);
         else
             $query = $this->db->get($table, $limit);
-        $post = $query->row_array();
+        $posts = $query->row_array();
 
-        if (!$post) return false;
+        if (!$posts) return false;
 
         if ($fetch) {
 
         }
 
 
-        return $post;
+        return $posts;
     }
 
-    public function getItems($getItems = array(), $table = 'posts', $fetch = false)
+    public function getItems($getItems = array(), $table = 'postss', $fetch = false)
     {
         $where = $order = array();
         $limit = 100;
@@ -91,13 +98,26 @@ class M_model extends CI_Model
             $query = $this->db->get($table, $limit, $offset);
         else
             $query = $this->db->get($table, $limit);
-        $posts = $query->result_array();
+        $postss = $query->result_array();
 
         if ($fetch) {
 
         }
 
-        return $posts;
+        return $postss;
+    }
+
+    public function save($table = 'posts', $id = 0, $data = array())
+    {
+        $id = (int)$id;
+        if (!$data) return false;
+        if ($id) {
+            $this->db->update($table, $data, array('id'=>$id));
+        } else {
+            $this->db->insert($table, $data);
+            $id = $this->db->insert_id();
+        }
+        return $id;
     }
 
 }

@@ -245,35 +245,31 @@ class Admin extends CI_Controller {
         if ($id)
             $post = $this->m_blog->getItem($id);
 
-        $tags = array();
-        $tags_raw = $this->m_blog->getItems(array(),'tags');
-        foreach($tags_raw as &$t)
-        {
-            $tags[$t['id']] = $t;
-        }
-
-        $tags_links = $this->m_blog->getItems(array(
+        $tags_links_raw = $this->m_blog->getItems(array(
             'where' => array(
                 'object_type' => 1,
                 'object_id' => $id
             )
         ),'tags_links');
-
-        $tags_linked = array();
-
-        if ($tags_links){
-            foreach($tags_links as $tl){
-                if (isset($tags[$tl['tag_id']]) && $tags[$tl['tag_id']]) {
-                    $tags_linked[$tl['tag_id']] = $tags[$tl['tag_id']];
-                    $tags[$tl['tag_id']]['linked'] = $tl['id'];
-                }
+        $tags_links = array();
+        if ($tags_links_raw){
+            foreach($tags_links_raw as $tl){
+                $tag_id = (int)$tl['tag_id'];
+                $tags_links[$tag_id] = (int)$tl['id'];
             }
         }
 
-        $tags_linked_json = json_encode($tags_linked);
-
-        if ($id && isset($post['tags']) && $tags_linked_json !=$post['tags']) {
-            $this->m_blog->update($id, array('tags'=>$tags_linked_json));
+        $tags = array();
+        $tags_raw = $this->m_blog->getItems(array(),'tags');
+        foreach($tags_raw as &$t)
+        {
+            $tag_id = (int)$t['id'];
+            if (isset($tags_links[$tag_id]) && $tags_links[$tag_id]){
+                $t['link_id'] = $tags_links[$tag_id];
+                $tags['linked'][(int)$t['id']] = $t;
+            }
+            else
+                $tags['unlinked'][(int)$t['id']] = $t;
         }
 
         $ps = array(

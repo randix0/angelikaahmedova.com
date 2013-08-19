@@ -25,6 +25,7 @@ class Ajax extends CI_Controller {
         parent::__construct();
         $this->load->library('json');
         $this->load->helper('url');
+        $this->load->helper('slugify');
         $this->load->model('m_model');
         $this->isAjax = $this->input->is_ajax_request();
     }
@@ -120,12 +121,14 @@ class Ajax extends CI_Controller {
         $post_id = (int)$this->input->post('id');
         if (!$RAW || !isset($RAW['iname']) || !$RAW['iname']) return $this->json->parse($result);
 
-        $this->load->model('m_products');
+        $this->load->model('m_model');
 
+        $iname = trim($RAW['iname']);
+        $idesc = trim($RAW['idesc']);
         $data = array(
-            'uri' => trim($RAW['uri']),
-            'iname' => trim($RAW['iname']),
-            'idesc' => trim($RAW['idesc']),
+            'iname' => $iname,
+            'uri' => slugify($iname),
+            'idesc' => $idesc,
         );
 
         $photos = array();
@@ -162,39 +165,50 @@ class Ajax extends CI_Controller {
         if ($RAW['add_date'] && is_array($RAW['add_date'])) {
             list($ad_y,$ad_m,$ad_d) = explode('-',$RAW['add_date']['date']);
             list($ad_h,$ad_i) = explode(':',$RAW['add_date']['time']);
-
             $data['add_date'] = mktime($ad_h,$ad_i,date('s'),$ad_m,$ad_d,$ad_y);
-
         }
 
+        $goto = false;
+        if (!$post_id) $goto = true;
+        $post_id = $this->m_model->save('posts',$post_id, $data);
+        if ($goto) $result['goto'] = '/admin/posts/'.$post_id;
+
+        $tags_ids = array();
         if (isset($RAW['tags']) && $RAW['tags'] && is_array($RAW['tags'])) {
-            $tags = array();
-            /*
-            $tags_raw = $this->m_blog->getItems(array(),'tags');
+            //$tags = array();
+            $tags_ids = $RAW['tags'];
+        }
+
+        if (isset($RAW['new_tags']) && $RAW['new_tags']) {
+            $tags_raw = explode(',',$RAW['new_tags']);
             foreach($tags_raw as &$t)
             {
-                $tags[$t['id']] = $t;
+                $t = trim($t);
+                $tag_exists = $this->m_model->getItem(array(
+                    'where' => array('iname'=>$t)
+                ));
+                if (!$tag_exists)
+                    $tags_ids[] = $this->m_model->create(array(
+                        'iname' => $t,
+                        'uri' => slugify($t)
+                    ),'tags');
             }
-
-            if ($post_id) {
-                $tags_links = $this->m_blog->getItems(array(
-                    'where' => array(
-                        'object_type' => 1,
-                        'object_id' => $post_id
-                    )
-                ),'tags_links');
-
-                foreach($tags_links as $tl){
-                    if (isset($tags[$tl['tag_id']]) && $tags[$tl['tag_id']]) {
-                        $tags[$tl['tag_id']]['linked'] = $tl['id'];
-                    }
-                }
-            }
-            */
-
         }
 
-        $post_id = $this->m_products->save('posts',$post_id, $data);
+        $result['tags'] = $RAW['new_tags'];
+
+        if ($tags_ids) {
+            $tags_links = array();
+            foreach($tags_ids as $t)
+            {
+                $tags_links[] = array(
+                    'object_type' => 1,
+                    'object_id' => $post_id,
+                    'tag_id' => (int)$t
+                );
+            }
+            $this->m_model->batch_create($tags_links, 'tags_links');
+        }
 
         if ($photos) {
             $p_add_date = time();
@@ -202,7 +216,7 @@ class Ajax extends CI_Controller {
             {
                 $p['posts_id'] = $post_id;
                 $p['add_date'] = $p_add_date;
-                $this->m_products->save('posts_photos', 0, $p);
+                $this->m_model->save('posts_photos', 0, $p);
             }
         }
 
@@ -310,7 +324,7 @@ class Ajax extends CI_Controller {
     {
         $result = array('status' => 'error');
         $RAW = $this->input->post('item');
-        if (!$RAW || !$table || !preg_match('/^(post|comments|tags_links|users|music|video)$/',$table,$match) || !isset($RAW['id']) || !$RAW['id']) return $this->json->parse($result);
+        if (!$RAW || !$table || !preg_match('/^(posts|comments|tags_links|users|music|video)$/',$table,$match) || !isset($RAW['id']) || !$RAW['id']) return $this->json->parse($result);
 
         $where = array(
             'id' => (int)$RAW['id']

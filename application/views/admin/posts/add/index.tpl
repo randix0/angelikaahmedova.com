@@ -1,4 +1,10 @@
-{include file="admin/std/sidebar/products.tpl"}
+<div class="span3">
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+            <li class="nav-header"><h3>Posts</h3></li>
+        </ul>
+    </div><!--/.well -->
+</div><!--/span-->
 
 <div class="span9">
     <h1>Add post</h1>
@@ -21,12 +27,6 @@
         </div>
         *}
         <div class="control-group">
-            <label class="control-label">URL-segment</label>
-            <div class="controls">
-                <input type="text" name="item[uri]" value="{$post.uri}" class="input-block-level"/>
-            </div>
-        </div>
-        <div class="control-group">
             <label class="control-label">Title</label>
             <div class="controls">
                 <input type="text" name="item[iname]" value="{$post.iname}" class="input-block-level"/>
@@ -35,7 +35,7 @@
         <div class="control-group">
             <label class="control-label">Description</label>
             <div class="controls">
-                <textarea name="item[idesc]" class="input-block-level">{$post.idesc}</textarea>
+                <textarea name="item[idesc]" rows="15" class="input-block-level">{$post.idesc}</textarea>
             </div>
         </div>
         <div class="control-group">
@@ -52,11 +52,27 @@
                 <img src="{$RESOURCES_URL}img/misc/tags.png" alt=""/>
             </label>
             <div class="controls">
-                {foreach from=$tags item=tag}
-                    <div>
-                        <label><input type="checkbox" name="item[tags][]" {if $tag.linked}checked="checked"{/if} value="{$tag.id}"/> {$tag.iname}</label>
-                    </div>
-                {/foreach}
+                {if $tags}
+                    {if isset($tags.linked) && $tags.linked}
+                        {foreach from=$tags.linked item=tag}
+                            <span id="tags_links__{$tag.link_id}" class="a-tags-item">
+                                {$tag.iname}
+                                <a class="icon-trash" onclick="Ajax.del('tags_links', {$tag.link_id});"></a>
+                            </span>
+                        {/foreach}
+                    {/if}
+                    {if isset($tags.unlinked) && $tags.unlinked}
+                        <div>
+                        {foreach from=$tags.unlinked item=tag}
+                            <label class="a-tags-item"><input type="checkbox" name="item[tags][]" value="{$tag.id}"/> {$tag.iname}</label>
+                        {/foreach}
+                        </div>
+                    {/if}
+                {/if}
+                <div>
+                    <h4>Введите теги через запятую:</h4>
+                    <input type="text" name="item[new_tags]" placeholder="вдохновение, музыка вечна" class="input-block-level"/>
+                </div>
             </div>
         </div>
 
@@ -147,7 +163,8 @@
                     success: function(data){
                         if (data.status == 'success'){
                             $(el).addClass('btn-success');
-
+                            if (typeof(data.goto) != 'undefined' && data.goto)
+                                window.location.href = data.goto;
                         } else {
                             $(el).addClass('btn-danger');
                             Window.load(SITE_URI+'modal/alertError/'+data.error,'win-alertError','');
@@ -159,3 +176,15 @@
 
         {/literal}
     </script>
+
+    <style type="text/css">
+        .a-tags-item {
+            display: inline-block;
+            zoom: 1;
+            vertical-align: middle;
+            background-color: #cfe4ff;
+            border-radius: 3px;
+            padding: 5px 5px;
+            margin: 0 5px 5px 0;
+        }
+    </style>
