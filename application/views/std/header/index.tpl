@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="{$RESOURCES_URL}css/window.css">
     <link rel="stylesheet" href="{$RESOURCES_URL}css/video-js.css">
     <link rel="stylesheet" href="{$RESOURCES_URL}css/sc-player.css?1">
+    <link rel="stylesheet" href="{$RESOURCES_URL}admin/css/bootstrap.css">
+    <link rel="stylesheet" href="{$RESOURCES_URL}admin/css/bootstrap-responsive.css">
     <link rel="stylesheet" href="{$RESOURCES_URL}css/angelika.css">
     <script src="{$RESOURCES_URL}js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="{$RESOURCES_URL}js/vendor/jquery-1.9.1.min.js"></script>

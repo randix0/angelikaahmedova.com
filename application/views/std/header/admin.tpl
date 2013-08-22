@@ -73,7 +73,7 @@
                     <li class=""><a href="/"><i class="icon-home icon-white"></i> На сайт</a></li>
                     {if $LOGGED && $USER_DATA && $USER_DATA.access_level > $ACL_EDIT}
                         <li class="{if isset($__PAGE) && $__PAGE == 'posts'}active{/if}"><a href="/admin/posts"><i class="icon-edit icon-white"></i> Блог</a></li>
-                        <li class="{if isset($__PAGE) && $__PAGE == 'about'}active{/if}"><a href="/admin/about"><i class="icon-edit icon-white"></i> Биография</a></li>
+                        <li class="{if isset($__PAGE) && $__PAGE == 'pages'}active{/if}"><a href="/admin/pages"><i class="icon-edit icon-white"></i> Страницы</a></li>
                         <li class="{if isset($__PAGE) && $__PAGE == 'media'}active{/if}"><a href="/admin/media"><i class="icon-music icon-white"></i> Музыка/Видео</a></li>
                         <li class="{if isset($__PAGE) && $__PAGE == 'users'}active{/if}"><a href="/admin/users"><i class="icon-user icon-white"></i> Пользователи</a></li>
                         <li class="{if isset($__PAGE) && $__PAGE == 'settings'}active{/if}"><a href="/admin/settings"><i class="icon-wrench icon-white"></i> Настройки</a></li>
