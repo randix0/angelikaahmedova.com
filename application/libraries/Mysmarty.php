@@ -22,7 +22,7 @@ class Mysmarty extends Smarty
         $current_url = '';
         $lang = $this->CI->uri->segment(1);
         if (!preg_match('(en|ru)',$lang)){
-            $lang = 'en';
+            $lang = 'ru';
             $current_url = uri_string();
         } else {
             $URIs = $this->CI->uri->segment_array();
@@ -215,7 +215,7 @@ class Mysmarty extends Smarty
             elseif ($diff_minutes == 1) // about hour
                 $action_time = $this->lang('ACTION_TIME_MINUTE');
             else // about hour
-                $action_time = $this->lang('ACTION_TIME_SECONDSS');
+                $action_time = $this->lang('ACTION_TIME_SECONDS');
         else
             $action_time = strftime('%d %b %Y',$time);
 
