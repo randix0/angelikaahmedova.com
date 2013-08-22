@@ -23,6 +23,7 @@
                     </div>
                 {/if*}
                 <a href="#" class="comment">Коментарии ({$post.comments_count})</a>
+                {include file="std/comments/index.tpl" object_type=1 object_id=$post.id comments=$post.comments}
             </div>
             {/if}
         </div>
