@@ -69,6 +69,8 @@ a:hover {text-decoration: underline; cursor: pointer;}
     background-repeat: no-repeat;
 }
 
+a.b-nav-item:hover {color: transparent;}
+
 .b-nav-item__about {background-position: 50px 10px;}
 .b-nav-item__music {background-position: 50px -41px;}
 .b-nav-item__video {background-position: 50px -92px;}
@@ -207,6 +209,17 @@ a:hover {text-decoration: underline; cursor: pointer;}
     display: inline-block;
     zoom: 1;
     margin: 0 30px 0 0;
+}
+
+.b-filter-item.active {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+}
+
+.b-filter-item.active:hover {
+    text-decoration: none;
+    cursor: default;
 }
 
 .b-blog {}

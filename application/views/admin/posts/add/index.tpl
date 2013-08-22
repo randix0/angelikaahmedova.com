@@ -76,6 +76,16 @@
             </div>
         </div>
 
+        <div class="control-group">
+            <label class="control-label">Status</label>
+            <div class="controls">
+                <select name="item[is_deleted]">
+                    <option value="0">published</option>
+                    <option value="1" {if $post && isset($post.is_deleted) && $post.is_deleted}selected="selected"{/if}>deleted</option>
+                </select>
+            </div>
+        </div>
+
         {*
         {if $post.id}
             <div><label>
@@ -122,69 +132,92 @@
     *}
 
 
-    <script type="text/javascript">
-        {literal}
+    {if $post && isset($post.comments) && $post.comments}
+    <div>
+        <h3>Comments ({$post.comments_count})</h3>
+        <div class="form-horizontal">
+            {foreach from=$post.comments item=comment}
+                <div id="comments__{$comment.id}" class="control-group">
+                    <div class="control-label" style="">
+                        {$comment.user_full_name}
+                        <div style="color: #ccc;">{$comment.add_date|actionTime:'time':'b-comments-item-time timestamp'}</div>
+                    </div>
+                    <div class="controls well">
+                        <a class="btn btn-danger right" onclick="Ajax.del('comments', {$comment.id});">Удалить</a>
+                        <div>{$comment.idesc}</div>
+                    </div>
+                </div>
+            {/foreach}
+        </div>
+    </div>
+    {/if}
 
-        Posts = {
-            del: function(el){
-                //alert('target='+target+'target_id='+target_id+'product_id='+product_id);
-                var target = $(el).attr('data-target'),
-                        item_id = $(el).attr('data-item_id'),
-                        news_id = $(el).attr('data-news_id');
-                ajax_url = '/ajax/del/'+target;
-                $.ajax({
-                    url: ajax_url,
-                    type: 'POST',
-                    data: 'item[item_id]='+item_id+'&item[parent_id]='+news_id,
-                    dataType: 'json',
-                    beforeSend: function(){
-                    },
-                    success: function(data){
-                        if (data.status == 'success'){
-                            $(el).addClass('btn-success');
+</div>
 
-                        } else {
-                            $(el).addClass('btn-danger');
-                            Window.load(SITE_URI+'modal/alertError/'+data.error,'win-alertError','');
-                        }
+
+<script type="text/javascript">
+    {literal}
+
+    Posts = {
+        del: function(el){
+            //alert('target='+target+'target_id='+target_id+'product_id='+product_id);
+            var target = $(el).attr('data-target'),
+                    item_id = $(el).attr('data-item_id'),
+                    news_id = $(el).attr('data-news_id');
+            ajax_url = '/ajax/del/'+target;
+            $.ajax({
+                url: ajax_url,
+                type: 'POST',
+                data: 'item[item_id]='+item_id+'&item[parent_id]='+news_id,
+                dataType: 'json',
+                beforeSend: function(){
+                },
+                success: function(data){
+                    if (data.status == 'success'){
+                        $(el).addClass('btn-success');
+
+                    } else {
+                        $(el).addClass('btn-danger');
+                        Window.load(SITE_URI+'modal/alertError/'+data.error,'win-alertError','');
                     }
-                });
-            },
-            photoDefault: function(el){
-                var item_id = $(el).attr('data-item_id'),
-                        news_id = $(el).attr('data-news_id');
-                $.ajax({
-                    url: '/ajax/savePostsCover',
-                    type: 'POST',
-                    data: 'item[item_id]='+item_id+'&item[news_id]='+news_id,
-                    dataType: 'json',
-                    beforeSend: function(){
-                    },
-                    success: function(data){
-                        if (data.status == 'success'){
-                            $(el).addClass('btn-success');
-                            if (typeof(data.goto) != 'undefined' && data.goto)
-                                window.location.href = data.goto;
-                        } else {
-                            $(el).addClass('btn-danger');
-                            Window.load(SITE_URI+'modal/alertError/'+data.error,'win-alertError','');
-                        }
+                }
+            });
+        },
+        photoDefault: function(el){
+            var item_id = $(el).attr('data-item_id'),
+                    news_id = $(el).attr('data-news_id');
+            $.ajax({
+                url: '/ajax/savePostsCover',
+                type: 'POST',
+                data: 'item[item_id]='+item_id+'&item[news_id]='+news_id,
+                dataType: 'json',
+                beforeSend: function(){
+                },
+                success: function(data){
+                    if (data.status == 'success'){
+                        $(el).addClass('btn-success');
+                        if (typeof(data.goto) != 'undefined' && data.goto)
+                            window.location.href = data.goto;
+                    } else {
+                        $(el).addClass('btn-danger');
+                        Window.load(SITE_URI+'modal/alertError/'+data.error,'win-alertError','');
                     }
-                });
-            }
-        };
-
-        {/literal}
-    </script>
-
-    <style type="text/css">
-        .a-tags-item {
-            display: inline-block;
-            zoom: 1;
-            vertical-align: middle;
-            background-color: #cfe4ff;
-            border-radius: 3px;
-            padding: 5px 5px;
-            margin: 0 5px 5px 0;
+                }
+            });
         }
-    </style>
+    };
+
+    {/literal}
+</script>
+
+<style type="text/css">
+    .a-tags-item {
+        display: inline-block;
+        zoom: 1;
+        vertical-align: middle;
+        background-color: #cfe4ff;
+        border-radius: 3px;
+        padding: 5px 5px;
+        margin: 0 5px 5px 0;
+    }
+</style>
