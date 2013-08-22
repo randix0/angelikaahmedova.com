@@ -72,7 +72,7 @@ class M_model extends CI_Model
         return $posts;
     }
 
-    public function getItems($getItems = array(), $table = 'postss', $fetch = false)
+    public function getItems($getItems = array(), $table = 'posts', $fetch = false)
     {
         $where = $order = array();
         $limit = 100;
@@ -118,6 +118,21 @@ class M_model extends CI_Model
             $id = $this->db->insert_id();
         }
         return $id;
+    }
+
+    public function increase($table = 'posts', $id, $colomn = '', $inc = 1)
+    {
+        if (!$colomn || !$id || !$inc) return false;
+        $id = (int)$id;
+
+        $this->db->where('id', $id);
+        if ($inc > 0)
+            $this->db->set($colomn, $colomn.'+'.abs($inc), FALSE);
+        else
+            $this->db->set($colomn, $colomn.'-'.abs($inc), FALSE);
+        $this->db->update($table);
+
+        return true;
     }
 
 }

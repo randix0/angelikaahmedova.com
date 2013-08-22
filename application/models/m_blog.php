@@ -25,21 +25,13 @@ class M_blog extends CI_Model
     }
 
 
-    public function create_comment($data, $idea_update = array())
+    public function create_comment($data)
     {
-        if (!$data || !isset($data['idea_id']) || !$data['idea_id']) return false;
+        if (!$data || !isset($data['object_type']) || !$data['object_type'] || !isset($data['object_id']) || !$data['object_id']) return false;
 
-        if (!$idea_update){
-            $idea = $this->getItem($data['idea_id']);
-            $comments_count = (int)$idea['comments_count'];
-            $idea_update = array('comments_count'=>$comments_count);
-        }
-
-        $this->db->insert('ideas_comments', $data);
-        $idea_comment_id = $this->db->insert_id();
-        if ($idea_comment_id)
-            $this->update($data['idea_id'],$idea_update);
-        return $idea_comment_id;
+        $this->db->insert('comments', $data);
+        $comment_id = $this->db->insert_id();
+        return $comment_id;
     }
 
     public function update($id, $data, $what = 'posts')
@@ -84,7 +76,7 @@ class M_blog extends CI_Model
         if (!$post) return false;
 
         if ($fetch) {
-            $post['comments'] = $this->db->where(array('object_type'=>1,'object_id'=>$post['id']))->get('comments')->result_array();
+            $post['comments'] = $this->db->where(array('object_type'=>1,'object_id'=>(int)$post['id']))->order_by('id','ASC')->get('comments')->result_array();
         }
 
 
