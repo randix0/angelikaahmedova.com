@@ -125,10 +125,12 @@ class Ajax extends CI_Controller {
 
         $iname = trim($RAW['iname']);
         $idesc = trim($RAW['idesc']);
+        $is_deleted = (int)$RAW['is_deleted'];
         $data = array(
             'iname' => $iname,
             'uri' => slugify($iname),
             'idesc' => $idesc,
+            'is_deleted' => $is_deleted
         );
 
         $photos = array();
@@ -331,9 +333,17 @@ class Ajax extends CI_Controller {
         );
 
         if ($table && $where) {
-            $del = $this->db->delete($table, $where);
-            if ($del)
-                $result['status'] = 'success';
+            $object = $this->db->get_where($table, $where, 1)->row_array();
+
+            if ($object){
+                $del = $this->db->delete($table, $where);
+                if ($del){
+                    if ($object['object_type'] == 1) {
+                        $this->m_model->increase('posts', (int)$object['object_id'], 'comments_count', -1);
+                    }
+                    $result['status'] = 'success';
+                }
+            }
         }
 
         return $this->json->parse($result);
@@ -890,31 +900,38 @@ class Ajax extends CI_Controller {
     public function saveComment()
     {
         $result = array('status' => 'error', 'errors' => array(), 'code' => 0);
-        //if (!$this->user->logged()) return $this->json->parse($result);
+        if (!$this->user->logged()) return $this->json->parse($result);
         $RAW = $this->input->post('item');
-        if (!$RAW || !isset($RAW['idea_id']) || !$RAW['idea_id'] || !isset($RAW['idesc']) || !$RAW['idesc']) return $this->json->parse($result);
+        if (!$RAW || !isset($RAW['object_type']) || !$RAW['object_type'] || !isset($RAW['object_id']) || !$RAW['object_id'] || !isset($RAW['idesc']) || !$RAW['idesc']) return $this->returner($result,'/blog/');
 
-        $this->load->model('m_ideas');
-        $idea_id = (int)$RAW['idea_id'];
+        $this->load->model('m_model');
+        $object_type = (int)$RAW['object_type'];
+        $object_id = (int)$RAW['object_id'];
 
-        $idea = $this->m_ideas->getItem($idea_id);
-        if (!$idea) return $this->json->parse($result);
-        $comments_count = (int)$idea['comments_count'] + 1;
-        $idea_update = array('comments_count'=>$comments_count);
+        $objects_id2table = array(
+            1 => 'posts'
+        );
+
+        if (!isset($objects_id2table[$object_type]) || !$objects_id2table[$object_type]) return $this->returner($result,'/blog/');
+
+        $object = $this->m_model->getItem($object_id, $objects_id2table[$object_type]);
+        if (!$object) return $this->returner($result,'/blog/');
 
         $data = array(
-            'idea_id' => $idea_id,
+            'object_type' => $object_type,
+            'object_id' => $object_id,
             'user_id' => $this->user->uid(),
             'user_full_name' => $this->user->first_name.' '.$this->user->last_name,
-            'user_avatar_m' => ($this->user->avatar_m)?$this->user->avatar_m:'',
+            'user_avatar' => ($this->user->avatar_m)?$this->user->avatar_m:'',
             'idesc' => strip_tags($RAW['idesc']),
             'add_date' => time()
         );
-        $idea_comment_id = $this->m_ideas->create_comment($data, $idea_update);
+        $comment_id = $this->m_model->create($data, 'comments');
+        $this->m_model->increase($objects_id2table[$object_type], $object_id, 'comments_count');
 
-        if ($idea_comment_id) {
+        if ($comment_id) {
             $result['status'] = 'success';
-            $result['html'] = $this->mysmarty->view('global/idea/comments/index.tpl', array('comments' => array($data)), false, true);
+            $result['html'] = $this->mysmarty->view('std/comments/item_processor.tpl', array('comments' => array($data)), false, true);
         } else {
             $result['errors'][] = 'comment add error';
         }

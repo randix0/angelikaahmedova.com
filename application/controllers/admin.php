@@ -243,7 +243,7 @@ class Admin extends CI_Controller {
         );
         $this->load->model('m_blog');
         if ($id)
-            $post = $this->m_blog->getItem($id);
+            $post = $this->m_blog->getItem($id, 'posts', true);
 
         $tags_links_raw = $this->m_blog->getItems(array(
             'where' => array(
@@ -315,15 +315,15 @@ class Admin extends CI_Controller {
         $this->mysmarty->view('admin/media/items/index.tpl', $ps);
     }
 
-    public function about()
+    public function pages()
     {
-        $about = array();
+        $pages = $this->m_model->getItems(false, 'pages');
         $ps = array(
             'ADMIN' => true,
-            '__PAGE' => 'about',
+            '__PAGE' => 'pages',
             '__SUBPAGE' => '',
-            'about' => $about,
+            'pages' => $pages,
         );
-        $this->mysmarty->view('admin/about/index.tpl', $ps);
+        $this->mysmarty->view('admin/pages/index.tpl', $ps);
     }
 }

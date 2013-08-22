@@ -18,7 +18,8 @@ class Blog extends CI_Controller {
 
         $ps = array(
             '__PAGE' => 'blog',
-            'posts' => $posts
+            'posts' => $posts,
+            'BLOG_FILTER' => 'posts'
         );
         $this->mysmarty->view('global/blog/posts/index.tpl', $ps);
     }
@@ -38,19 +39,49 @@ class Blog extends CI_Controller {
         $this->mysmarty->view('global/blog/posts/index.tpl', $ps);
     }
 
-    public function tags($id = 0)
+    public function tags($uri = '')
     {
         $this->load->model('m_blog');
+        $this->load->model('m_model');
 
-        $posts = $this->m_blog->getItems(array(
+        $tags = $this->m_blog->getItems(array(
+            'where' => array('is_deleted' => 0),
             'order' => array('id'=>'desc')
-        ), 'posts', true);
+        ), 'tags', true);
+
+        $posts = array();
+        $tag = array();
+        if ($uri) {
+            $uri = trim($uri);
+            $tag = $this->m_model->getItem(array('uri'=>$uri), 'tags');
+            if ($tag) {
+                $tags_links_raw = $this->m_model->getItems(array('object_type'=>1, 'tag_id'=>$tag['id']), 'tags_links');
+                if ($tags_links_raw) {
+                    $tags_links = array();
+                    foreach($tags_links_raw as $tl) {
+                        $tags_links[] = (int)$tl['object_id'];
+                    }
+                    if ($tags_links) {
+                        $posts = $this->db->where_in('id', $tags_links)->order_by('id', 'desc')->get('posts')->result_array();
+                    }
+                }
+            }
+        }
+
+        if (!$posts) {
+            $posts = $this->m_blog->getItems(array(
+                'order' => array('id'=>'desc')
+            ), 'posts', true);
+        }
 
         $ps = array(
             '__PAGE' => 'blog',
-            'posts' => $posts
+            'tags' => $tags,
+            'current_tag' => $tag,
+            'posts' => $posts,
+            'BLOG_FILTER' => 'tags'
         );
-        $this->mysmarty->view('global/blog/posts/index.tpl', $ps);
+        $this->mysmarty->view('global/blog/tags/index.tpl', $ps);
     }
 
     public function post($id = 0)
@@ -62,7 +93,8 @@ class Blog extends CI_Controller {
 
         $ps = array(
             '__PAGE' => 'blog',
-            'post' => $post
+            'post' => $post,
+            'BLOG_FILTER' => 'post'
         );
         $this->mysmarty->view('global/blog/post/index.tpl', $ps);
     }
