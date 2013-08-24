@@ -35,7 +35,7 @@
         <div class="control-group">
             <label class="control-label">Description</label>
             <div class="controls">
-                <textarea name="item[idesc]" rows="15" class="input-block-level">{$post.idesc}</textarea>
+                <textarea name="item[idesc]" rows="15" class="wysihtml5 input-block-level">{$post.idesc}</textarea>
             </div>
         </div>
         <div class="control-group">
@@ -221,3 +221,28 @@
         margin: 0 5px 5px 0;
     }
 </style>
+
+<script type="text/javascript">
+    {literal}
+    $('.wysihtml5').wysihtml5({
+        "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+        "emphasis": true, //Italics, bold, etc. Default true
+        "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+        "html": true, //Button which allows you to edit the generated HTML. Default false
+        "link": true, //Button to insert a link. Default true
+        "image": true, //Button to insert an image. Default true,
+        "color": false, //Button to change color of font
+
+        parserRules: {
+            classes: {
+                "middle": 1
+            },
+            tags: {
+                strong: {},
+                em: {},
+                p: {}
+            }
+        }
+    });
+    {/literal}
+</script>

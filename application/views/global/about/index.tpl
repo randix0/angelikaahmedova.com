@@ -4,7 +4,11 @@
         <div class="s-content">
             <div class="s-content-body s-content-body__folio">
                 <h1>Начало</h1>
-                {include file="global/about/content.tpl"}
+                {if isset($about) && $about}
+                    {$about.idesc}
+                {else}
+                    {include file="global/about/content.tpl"}
+                {/if}
             </div>
         </div>
     </div>

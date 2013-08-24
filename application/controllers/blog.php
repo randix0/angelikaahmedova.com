@@ -53,7 +53,7 @@ class Blog extends CI_Controller {
         $tag = array();
         if ($uri) {
             $uri = trim($uri);
-            $tag = $this->m_model->getItem(array('uri'=>$uri), 'tags');
+            $tag = $this->m_model->getItem((string)$uri, 'tags');
             if ($tag) {
                 $tags_links_raw = $this->m_model->getItems(array('object_type'=>1, 'tag_id'=>$tag['id']), 'tags_links');
                 if ($tags_links_raw) {

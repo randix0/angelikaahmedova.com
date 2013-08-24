@@ -249,6 +249,45 @@ a.b-nav-item:hover {color: transparent;}
     font-size: 13px;
     margin: 0 0 16px 0;
 }
+.b-blog-article-idesc {margin: 0 0 20px 0;}
+
+.b-comments-number {
+    margin: 0 0 10px 0;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.b-blog-article-tags {
+    margin: 10px 0;
+}
+.b-tag {
+    display: inline-block;
+    background: url(../img/misc/tags.png) 0 50% no-repeat;
+    line-height: 16px;
+    margin: 5px 10px 5px 0;
+    padding: 0 5px 0 25px;
+}
+.b-tag.active {font-weight: bold;}
+
+.b-comments {}
+.b-comments-item {}
+.b-comments-item-time {font-weight: normal; color: #ccc; padding-left: 10px;}
+.b-comments-item-author {font-weight: bold;}
+.b-comments-item-author-avatar {
+    float: left;
+    width: 60px;
+    height: 60px;
+    margin: 0 20px 0 0;
+    border-radius: 6px;
+    background-color: #ccc;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+.b-comments-item-content {
+    margin-left: 80px;
+}
+.b-comments-item-idesc {}
+
 
 .video-js {position: absolute;}
 .vjs-default-skin .vjs-big-play-button {

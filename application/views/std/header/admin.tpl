@@ -7,6 +7,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="{$RESOURCES_URL}js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="{$RESOURCES_URL}admin/js/bootstrap.min.js"></script>
+    <script src="{$RESOURCES_URL}admin/js/wysihtml5-0.3.0.js"></script>
+    <script src="{$RESOURCES_URL}admin/js/bootstrap-wysihtml5.js"></script>
 
     <!-- Le styles -->
     <link rel="stylesheet" href="{$RESOURCES_URL}css/window.css">
@@ -31,6 +34,7 @@
     <link rel="stylesheet" href="{$RESOURCES_URL}css/helpers.css">
     <link href="{$RESOURCES_URL}admin/css/bootstrap.css" rel="stylesheet">
     <link href="{$RESOURCES_URL}admin/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{$RESOURCES_URL}admin/css/bootstrap-wysihtml5.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>

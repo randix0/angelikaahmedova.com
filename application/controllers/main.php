@@ -41,9 +41,16 @@ class Main extends CI_Controller {
 
         $music = $this->m_model->getItems(array(),'music');
         $video = $this->m_model->getItems(array('order'=>array('id'=>'desc')),'video');
+        $about = $this->m_model->getItem(array(
+            'where' => array(
+                'code' => 'about'
+            ),
+            'limit'=> 1
+        ), 'pages');
 
         $ps = array(
             '__PAGE' => 'main',
+            'about' => $about,
             'instagram' => $instagram,
             'music' => $music,
             'video' => $video

@@ -9,3 +9,11 @@
 {else}
     <a onclick="Window.load('/modal/login','win-login','')">Login</a>
 {/if}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        Ajax.callback = function(data){
+            $('.b-comments-items').append(data.html);
+        }
+    });
+</script>

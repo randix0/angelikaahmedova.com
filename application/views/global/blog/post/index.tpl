@@ -11,7 +11,7 @@
                     <a class="b-blog-article-title-link" href="/blog/post/{$post.id}/">{$post.iname}</a>
                 </h1>
                 {$post.add_date|actionTime:'time':'b-blog-article-time timestamp'}
-                <div class="article_idesc">
+                <div class="b-blog-article-idesc">
                     {$post.idesc|truncate:300}
                 </div>
                 {*if isset($post.tags) && $post.tags}
@@ -22,7 +22,16 @@
                         {/foreach}
                     </div>
                 {/if*}
-                <a href="#" class="comment">Коментарии ({$post.comments_count})</a>
+                <div class="b-blog-article-tags">
+                    {if $post.tags}
+                        {foreach from=$post.tags item=tag}
+                            <a class="b-tag" href="/blog/tags/{$tag.uri}">
+                                {$tag.iname}
+                            </a>
+                        {/foreach}
+                    {/if}
+                </div>
+                <div class="b-comments-number">Коментарии ({$post.comments_count})</div>
                 {include file="std/comments/index.tpl" object_type=1 object_id=$post.id comments=$post.comments}
             </div>
             {/if}

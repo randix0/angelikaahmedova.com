@@ -1196,6 +1196,34 @@ class Ajax extends CI_Controller {
         }
         return $this->returner($result,'/admin/media/');
     }
+
+    public function savePage(){
+        $result = array('status' => 'error', 'errors' => array(), 'code' => 0);
+        $RAW = $this->input->post('item');
+        $page_id = (int)$this->input->post('id');
+        if (!$RAW || !isset($RAW['idesc']) || !$RAW['idesc']) return $this->json->parse($result);
+
+        $this->load->model('m_model');
+
+        $idesc = trim($RAW['idesc']);
+        $is_deleted = (int)$RAW['is_deleted'];
+        $data = array(
+            'idesc' => $idesc,
+            'is_deleted' => $is_deleted
+        );
+
+        $goto = false;
+        if (!$page_id) $goto = true;
+        $page_id = $this->m_model->save('pages',$page_id, $data);
+        if ($goto) $result['goto'] = '/admin/pages/';
+
+        if ($page_id) {
+            $result['status'] = 'success';
+        } else {
+            $result['errors'][] = 'comment add error';
+        }
+        return $this->json->parse($result);
+    }
 }
 
 /* End of file main.php */
