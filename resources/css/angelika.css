@@ -21,12 +21,12 @@ a:hover {text-decoration: underline; cursor: pointer;}
     /*overflow: hidden;*/
 }
 
-.s-section__main {background-image: url(../img/bg/bg_1_index.jpg);}
-.s-section__about {background-image: url(../img/bg/bg_2_bio.jpg);}
-.s-section__music {background-image: url(../img/bg/bg_3_music.jpg);}
-.s-section__video {background-image: url(../img/bg/bg_3_music.jpg);}
-.s-section__photo {background-image: url(../img/bg/bg_5_photo.jpg); background-attachment: scroll; background-size: 100% 100%;}
-.s-section__blog {background-image: url(../img/bg/bg_6_blog.jpg); background-attachment: scroll;}
+.s-section__main {background-image: url(../img/bg/bg_1_index.jpg?1);}
+.s-section__about {background-image: url(../img/bg/bg_2_bio.jpg?1);}
+.s-section__music {background-image: url(../img/bg/bg_3_music.jpg?1);}
+.s-section__video {background-image: url(../img/bg/bg_3_music.jpg?1);}
+.s-section__photo {background-image: url(../img/bg/bg_5_photo.jpg?1); background-attachment: scroll; background-size: 100% 100%;}
+.s-section__blog {background-image: url(../img/bg/bg_6_blog.jpg?1); background-attachment: scroll;}
 
 .s-section-stars {
     overflow: hidden;
