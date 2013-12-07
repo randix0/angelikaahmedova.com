@@ -80,16 +80,20 @@ class M_blog extends CI_Model
 
             $tags_ids = array();
             $post_tags_links = $tags_raw = $this->db->get_where('tags_links', array('object_type'=>1, 'object_id'=>$post['id']))->result_array();
-            foreach($post_tags_links as $tl)
-            {
-                $tags_ids[] = $tl['tag_id'];
+            if ($post_tags_links) {
+                foreach($post_tags_links as $tl)
+                {
+                    $tags_ids[] = $tl['tag_id'];
+                }
             }
 
             $tags = array();
-            $tags_raw = $this->db->where_in('id',$tags_ids)->get('tags')->result_array();
-            foreach($tags_raw as $t)
-            {
-                $tags[$t['id']] = $t;
+            if ($tags_ids) {
+                $tags_raw = $this->db->where_in('id',$tags_ids)->get('tags')->result_array();
+                foreach($tags_raw as $t)
+                {
+                    $tags[$t['id']] = $t;
+                }
             }
 
             $post['tags'] = $tags;

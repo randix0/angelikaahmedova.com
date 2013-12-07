@@ -1,5 +1,6 @@
 <section id="about" class="s-section s-section__about" data-speed="30" data-type="background">
     <div class="s-section-stars" data-speed="10" data-type="background">
+        <div class="s-section-label">Биография</div>
         {include file="std/nav/index.tpl" __PAGE="about"}
         <div class="s-content">
             <div class="s-content-body s-content-body__folio">

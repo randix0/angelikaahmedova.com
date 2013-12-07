@@ -17,10 +17,11 @@
     <link rel="stylesheet" href="{$RESOURCES_URL}css/main.css">
     <link rel="stylesheet" href="{$RESOURCES_URL}css/window.css">
     <link rel="stylesheet" href="{$RESOURCES_URL}css/video-js.css">
-    <link rel="stylesheet" href="{$RESOURCES_URL}css/sc-player.css?1">
-    <link rel="stylesheet" href="{$RESOURCES_URL}admin/css/bootstrap.css">
+    <link rel="stylesheet" href="{$RESOURCES_URL}css/sc-player.css?2">
+    {*<link rel="stylesheet" href="{$RESOURCES_URL}admin/css/bootstrap.css">*}
     <link rel="stylesheet" href="{$RESOURCES_URL}admin/css/bootstrap-responsive.css">
     <link rel="stylesheet" href="{$RESOURCES_URL}css/angelika.css">
+    <link rel="stylesheet" href="{$RESOURCES_URL}css/media-queries.css?1">
     <script src="{$RESOURCES_URL}js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="{$RESOURCES_URL}js/vendor/jquery-1.9.1.min.js"></script>
     <script src="{$RESOURCES_URL}js/vendor/jquery.scrollto.js"></script>
@@ -41,6 +42,9 @@
 <body class="{if isset($__PAGE) && $__PAGE}body__{$__PAGE}{/if}">
 <!--[if lt IE 7]>
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+<!--[if lt IE 9]>
+<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 <![endif]-->
 
 <div id="dimmer" class="dimmer" style="display: none;"></div>

@@ -17,7 +17,6 @@
     {/if}
 
     <script>
-
         _V_("video_screen"{if $video}, { "techOrder":["youtube"], "src": "http://www.youtube.com/embed/{$video[0].code}", {if (isset($video[0].poster_b) && $video[0].poster_b)}"poster": '/{$video[0].poster_b}'{/if} }{/if}).ready(function(){
             var myPlayer = this;
 
@@ -35,5 +34,22 @@
         });
 
     </script>
+</section>
 
+<section id="video" class="s-section s-section__video__mobile" data-speed="30" data-type="background">
+    <div class="s-section-stars" data-speed="10" data-type="background">
+        <div class="s-section-label">Видео</div>
+        {include file="std/nav/index.tpl" __PAGE="video"}
+        <div class="s-content">
+            <div class="s-content-body">
+                {if isset($video) && $music}
+                    {foreach from=$video item=item}
+                        <a target="_blank" href="http://youtu.be/{$item.code}">
+                            <img src="{$item.poster_b}" alt="{$item.iname}" style="width: 100%; max-width: 480px;"/>
+                        </a>
+                    {/foreach}
+                {/if}
+            </div>
+        </div>
+    </div>
 </section>

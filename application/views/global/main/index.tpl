@@ -21,7 +21,7 @@
 <script type="text/javascript">
     {literal}
     $(document).ready(function(){
-        $('.b-logo, .b-nav-item').bind('click', function(e){
+        $('.b-logo, .b-nav-item_hash').bind('click', function(e){
             $.scrollTo(this.hash, this.hash);
             e.preventDefault();
         });
